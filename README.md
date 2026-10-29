@@ -15,8 +15,8 @@ A containerised five-stage local video pipeline, exposed as an MCP stdio server.
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `VOICEBOX_URL` | `http://127.0.0.1:17493` | Base URL of the Voicebox server |
-| `VOICEBOX_TTS_PATH` | `/generate` | TTS endpoint path, sent JSON `{"text", "profile"}` |
-| `WAN_CMD` | none (required) | Shell template with `{portrait}`, `{seconds}`, `{out}` |
+| `VOICEBOX_MODEL` | none (required) | Model id for `POST /v1/audio/speech`; list ids at `GET /v1/models` |
+| `WAN_CMD` | none (required) | Shell template with `{portrait}`, `{seconds}`, `{out}`; values are shell-quoted |
 | `WAN_WEIGHTS` | none | Path to the Q4_K_M GGUF Wan 2.1 weights |
 
 ## Build and run
