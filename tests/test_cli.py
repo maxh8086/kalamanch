@@ -14,7 +14,8 @@ class BuildParserTests(unittest.TestCase):
             action for action in parser._actions if action.dest == "command"
         )
         self.assertEqual(
-            set(subparsers.choices), {"assemble", "upscale", "voice", "animate"}
+            set(subparsers.choices),
+            {"assemble", "upscale", "voice", "animate", "accept", "cleanup"},
         )
 
     def test_assemble_arguments_parse(self):

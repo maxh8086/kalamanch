@@ -4,6 +4,7 @@ import argparse
 import sys
 
 from kalamanch.assemble import assemble
+from kalamanch.cleanup import cleanup, record_final
 from kalamanch.upscale import upscale
 from kalamanch.video import animate
 from kalamanch.voice import synthesize
@@ -33,6 +34,12 @@ def build_parser():
     p.add_argument("seconds", type=float)
     p.add_argument("out_path")
 
+    p = sub.add_parser("accept", help="Mark voice profiles as used by an accepted final edit")
+    p.add_argument("profiles", nargs="+")
+
+    p = sub.add_parser("cleanup", help="Delete accepted voice profiles after the 10-day grace period")
+    p.add_argument("--dry-run", action="store_true", help="List profiles that are due, delete nothing")
+
     return parser
 
 
@@ -47,6 +54,10 @@ def main(argv=None):
             out = synthesize(args.text, args.profile, args.out_path)
         elif args.command == "animate":
             out = animate(args.portrait, args.seconds, args.out_path)
+        elif args.command == "accept":
+            out = record_final(args.profiles)
+        elif args.command == "cleanup":
+            out = cleanup(dry_run=args.dry_run)
         else:  # pragma: no cover - argparse enforces the choices
             raise ValueError(f"unknown command: {args.command}")
     except RuntimeError as exc:
