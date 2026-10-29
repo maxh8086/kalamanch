@@ -30,6 +30,17 @@ def _check(response, what):
     return response
 
 
+def unload_models():
+    """Ask Voicebox to unload its TTS models so the GPU is free for the video stage.
+
+    If Voicebox is not running, nothing is loaded, so return without error.
+    """
+    try:
+        requests.post(f"{_base()}/models/unload", timeout=60)
+    except requests.ConnectionError:
+        return
+
+
 def resolve_profile_id(profile, base):
     """Return the id of the profile whose name or id matches ``profile``."""
     profiles = _check(requests.get(f"{base}/profiles", timeout=30), "GET /profiles").json()

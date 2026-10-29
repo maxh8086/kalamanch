@@ -11,6 +11,8 @@ import os
 import shlex
 import subprocess
 
+from kalamanch.voice import unload_models
+
 
 def animate(portrait, seconds, out_path):
     """Run the WAN_CMD template for one portrait and return ``out_path``."""
@@ -20,6 +22,9 @@ def animate(portrait, seconds, out_path):
         if not os.environ.get("WAN_WEIGHTS"):
             message += " WAN_WEIGHTS is also unset; point it at the Q4_K_M GGUF weights."
         raise RuntimeError(message)
+
+    # Free GPU memory held by Voicebox before Wan loads its weights.
+    unload_models()
 
     command = template.format(
         portrait=shlex.quote(str(portrait)),
